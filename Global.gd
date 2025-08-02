@@ -32,7 +32,11 @@ func load_game():
 		return
 	save_game.open_encrypted_with_pass("user://SavedGame.save", File.READ, "enc")
 	
-	var current_line = parse_json(save_game.get_line())
-	
-	highscore = current_line["highscore"]
+	var json_text = save_game.get_line()
+	var current_line = parse_json(json_text)
+
+	if typeof(current_line) == TYPE_DICTIONARY:
+		highscore = current_line["highscore"]
+	else:
+		print("Failed to parse save file or empty data: ", json_text)
 	save_game.close()
